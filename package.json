@@ -1,0 +1,15 @@
+{
+  "name": "web_app",
+  "version": "1.0.0",
+  "description": "web_app_first_try",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
