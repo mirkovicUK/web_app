@@ -165,4 +165,8 @@ cython_debug/
 *.zip
 
 # node
+.nyc_output
+.webpack
+coverage
+dist
 node_modules
