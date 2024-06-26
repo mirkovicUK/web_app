@@ -13,8 +13,17 @@ def lambda_handler(event, context):
     password = body ['password']
     
 
-    users_table.put_item(Item={
+    response = users_table.put_item(Item={
         'user_name' : user_name,
         'password' : password,
         'last_updated_time' : dt.now().strftime("%d/%m/%Y, %H:%M:%S")
-    })
+    },
+    ReturnConsumedCapacity='TOTAL')
+
+    # response = users_table.get_item(
+    #             Key={
+    #                 'user_name': {
+    #                     'S': 'new_user1',
+    #                 },
+    #             })
+    # print(response)

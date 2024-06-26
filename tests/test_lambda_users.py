@@ -50,16 +50,10 @@ def test_lambda():
                         ProvisionedThroughput = ProvisionedThroughput,
                         TableName=TableName)
     
-    response = lambda_handler(event, context=None)
+    lambda_handler(event, context=None)
 
-    response = client.get_item(
-                Key={
-                    'user_name': {
-                        'S': 'new_user1',
-                    },
-                },
-                TableName='Music',
-                )
+    table = boto3.resource('dynamodb').Table(TableName)
+    response = table.scan()
 
     print(response)
 
