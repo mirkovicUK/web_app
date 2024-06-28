@@ -189,7 +189,7 @@ def test_lambda_GETmethod_handle_DB_error_return_400():
         }
     ]
     BillingMode = 'PAY_PER_REQUEST'
-    TableName='some users'
+    TableName='some other users table'
 
     client = boto3.client('dynamodb')   
     client.create_table(AttributeDefinitions=AttributeDefinitions,
