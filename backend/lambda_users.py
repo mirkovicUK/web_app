@@ -9,13 +9,12 @@ import botocore.exceptions
 
 def lambda_handler(event, context):
     """
-    Lambda to insert and fetch user to/from user table 
+    Lambda to insert and fetch users to/from user table 
     """
-
-    dynamodb_client = boto3.client('dynamodb')
-    dynamodb_table = boto3.resource('dynamodb').Table('users')
     table_name = 'users'
-
+    dynamodb_client = boto3.client('dynamodb')
+    dynamodb_table = boto3.resource('dynamodb').Table(table_name)
+    
     # POST new user
     try:
         if (event['body']) and (event['body'] is not None) and (event['httpMethod'] == 'POST'):
