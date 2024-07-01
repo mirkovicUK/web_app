@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width">
+      <title>HTML Login Form</title>
+      <link rel="stylesheet" href="login_style.css">
+</head>
+
+<body>
+      <div class="main">
+            <h1>Log in </h1>
+            <form id="login_form" action="" method="GET" name="Login form">
+                  <label for="Username">Username:</label>
+                  <input type="email" id="username" name="username" placeholder="Enter your email" required>
+                  
+                  <label for="password"> Password:</label>
+                  <input type="password" id="id_password" name="password" placeholder="Enter your Password" required>
+                                    
+            </form>
+
+            <div class="wrap">
+                  <button type="button" name="button" onclick="call_api()">
+                        Submit
+                  </button>
+            </div>
+
+            <p>Keep Browsing
+                  <a href="index.html" >Cancel</a>
+            </p>
+            
+            <p>Not registered?
+                  <a href="#" style="text-decoration: none;">Create an account</a>
+            </p>
+      </div>
+      <script src="login.js"></script>
+</body>
+
+</html>
