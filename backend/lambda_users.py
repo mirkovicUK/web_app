@@ -19,6 +19,12 @@ def lambda_handler(event, context):
     try:
         if (event['body']) and (event['body'] is not None) and (event['httpMethod'] == 'POST'):
             body = json.loads(event['body'])
+            try:
+                first_name, last_name = body['first_name'], body['last_name']
+            except KeyError:
+                #body only has username & password
+                #this is log in from client
+                pass
 
             response = dynamodb_client.put_item(
             TableName = table_name,
@@ -38,7 +44,7 @@ def lambda_handler(event, context):
                                            + ' ' + body['last_name'] + ' created'),
                         "isBase64Encoded": False
                         }
-    except KeyError as e:
+    except KeyError:
         return {
                 "statusCode": 400,
                 "headers": {
