@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "amazon-cognito-identity-js": "^6.3.12"
   }
 }
