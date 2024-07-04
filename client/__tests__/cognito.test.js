@@ -1,4 +1,3 @@
-const proba = require('../cognito.js');
 
 describe('proba', () => {
   it('tests are linked', () => {
