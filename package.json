@@ -4,7 +4,8 @@
   "description": "web_app_first_try",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "testWatch" :"jest --watch"
   },
   "keywords": [],
   "author": "",
