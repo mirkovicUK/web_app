@@ -1,3 +1,4 @@
+import { signUp } from "../cognito"
 
 describe('proba', () => {
   it('tests are linked', () => {
