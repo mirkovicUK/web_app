@@ -64,7 +64,8 @@ const initiateAuth = ({username, password, clientId})=>{
 }
 
 if(fileURLToPath(import.meta.url) === process.argv[1]){
-
+    console.log(import.meta.resolve())
+    
     try{
         const response = await initiateAuth({
             username : 'uros1',
