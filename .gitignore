@@ -168,7 +168,7 @@ cython_debug/
 .nyc_output
 .webpack
 coverage
-dist
+# dist
 node_modules
 
 #Vcode
