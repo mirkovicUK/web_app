@@ -1,19 +1,22 @@
-import { fileURLToPath } from "url"
-import {
-    AuthFlowType,
-    InitiateAuthCommand,
-    UsernameExistsException,
-    paginateListUserPools,
-    SignUpCommand,
-    CognitoIdentityProviderClient,
-    ListUsersCommand,
-} from "@aws-sdk/client-cognito-identity-provider"
+// import { fileURLToPath } from "url"
+// import {
+//     AuthFlowType,
+//     InitiateAuthCommand,
+//     UsernameExistsException,
+//     paginateListUserPools,
+//     SignUpCommand,
+//     CognitoIdentityProviderClient,
+//     ListUsersCommand,
+// } from "@aws-sdk/client-cognito-identity-provider"
+
+const { SignUpCommand, CognitoIdentityProviderClient} = 
+require("@aws-sdk/client-cognito-identity-provider")
 
 
 
 
 
-export const helloCognito = async () => {
+module.export.helloCognito = async () => {
     const client = new CognitoIdentityProviderClient({});
     const paginator = paginateListUserPools({ client }, {});
   
@@ -29,7 +32,7 @@ export const helloCognito = async () => {
     return userPoolNames;
 };
 
-export const signUp = (clientId, username, password, email)=>{
+module.exports. signUp = (clientId, username, password, email)=>{
     const client = new CognitoIdentityProviderClient({})
     const command = new SignUpCommand({
         ClientId : clientId,
@@ -37,10 +40,14 @@ export const signUp = (clientId, username, password, email)=>{
         Password : password,
         UserAttributes : [{Name:'email', Value:email}, {Name:'custom:paid_subscription', Value:'false'}]
     })
-
-    return client.send(command)
-    
+    return client.send(command)  //async call
 }
+
+ function UROS (x){
+    if(x){
+    console.log('UROS')}
+}
+module.exports = {UROS}
 
 const listUsers = ({userPoolId})=>{
     const client = new CognitoIdentityProviderClient({})
@@ -63,8 +70,8 @@ const initiateAuth = ({username, password, clientId})=>{
     return client.send(command)
 }
 
-if(fileURLToPath(import.meta.url) === process.argv[1]){
-    console.log(import.meta.resolve())
+// if(fileURLToPath(import.meta.url) === process.argv[1]){
+//     console.log(import.meta.resolve())
     
     try{
         const response = await initiateAuth({
@@ -79,46 +86,46 @@ if(fileURLToPath(import.meta.url) === process.argv[1]){
         throw err
     }
     
-    // try{
-    //     const response = await listUsers({userPoolId:'eu-west-2_Zzl6pXO5x'})
-    //     const users = response.Users
-    //     for(const user of users){
-    //         for(const attribute of user.Attributes){
-    //             if(attribute.Name == 'custom:paid_subscription'){
-    //                 console.log(attribute.Value)
-    //             }
-    //         }
-    //     }
-    // }
-    // catch(err){
-    //     console.log(err.message)
-    //     throw err
-    // }
+    try{
+        const response = await listUsers({userPoolId:'eu-west-2_Zzl6pXO5x'})
+        const users = response.Users
+        for(const user of users){
+            for(const attribute of user.Attributes){
+                if(attribute.Name == 'custom:paid_subscription'){
+                    console.log(attribute.Value)
+                }
+            }
+        }
+    }
+    catch(err){
+        console.log(err.message)
+        throw err
+    }
 
    
 
-    // try{
-    //     var userName = 'uros1'
-    //     const response = await signUp(
-    //         '2ajliukud2ofqp5l4nu939srks',
-    //         userName,
-    //         'aaA111$$$1',
-    //         'mirkovic.uk@gmail.com'
-    //     )
+    try{
+        var userName = 'uros1'
+        const response = await signUp(
+            '2ajliukud2ofqp5l4nu939srks',
+            userName,
+            'aaA111$$$1',
+            'mirkovic.uk@gmail.com'
+        )
     
-    //     if (response['$metadata'].httpStatusCode === 200){
-    //         console.log('User created chears, pls verify email')
-    //     }
-    // }
-    // catch(err){
-    //     if(err instanceof UsernameExistsException){
-    //         console.log(`alert user: \n User name:${userName} exists`)
-    //     } else {
-    //         throw err
-    //     }
-    // }
+        if (response['$metadata'].httpStatusCode === 200){
+            console.log('User created chears, pls verify email')
+        }
+    }
+    catch(err){
+        if(err instanceof UsernameExistsException){
+            console.log(`alert user: \n User name:${userName} exists`)
+        } else {
+            throw err
+        }
+    }
 
-    // helloCognito()
+    helloCognito()
     
 }
 

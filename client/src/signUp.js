@@ -1,4 +1,4 @@
-const showPassword = ()=>{
+function showPassword(){
     const x = document.getElementById("password");
     if (x.type === "password") {
         x.type = "text";
@@ -9,7 +9,10 @@ const showPassword = ()=>{
 
 
 
-
+document.querySelector('input[type=checkbox]').
+addEventListener('change', ()=>{
+    showPassword()
+})
 
 
 
