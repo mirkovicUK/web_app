@@ -170,3 +170,6 @@ cython_debug/
 coverage
 dist
 node_modules
+
+#Vcode
+.vscode
