@@ -1,4 +1,9 @@
-import { signUp } from "../cognito"
+import { signUp } from "../src/signUp"
+import { mockClient } from "aws-sdk-client-mock";
+import { 
+  SignUpCommand,
+  CognitoIdentityProviderClient
+} from "@aws-sdk/client-cognito-identity-provider";
 
 describe('proba', () => {
   it('tests are linked', () => {
