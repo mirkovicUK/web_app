@@ -4,7 +4,7 @@
   "description": "web_app_first_try",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "node  --experimental-vm-modules node_modules/jest/bin/jest.js",
     "testWatch": "jest --watch",
     "build": "webpack"
   },
@@ -22,5 +22,6 @@
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.609.0",
     "@aws-sdk/client-s3": "^3.609.0"
-  }
+  },
+  "type": "module"
 }
