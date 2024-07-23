@@ -59,8 +59,8 @@
               <label for="userName" class="form-label">Username</label>
               <input type="text" class="form-control shadow  bg-body rounded" 
                 id="userName" name="username" autocomplete="on">
-              <div id="userNameHelp" class="form-text text">CLICK ME FOR SUGESTIONS</div>
-            </div>
+              <div id="userNameHelp" class="form-text text"></div>
+              </div>
 
             <div class="mb-3" >
                 <label for="password" class="form-label">Password</label>
@@ -90,9 +90,6 @@
         var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
             return new bootstrap.Popover(popoverTriggerEl)
-        })
-        var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
-        trigger: 'focus'
         })
     </script>
   </body>

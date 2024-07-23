@@ -60,7 +60,7 @@
               <input type="text" class="form-control shadow  bg-body rounded" 
                 id="userName" name="username" autocomplete="on">
               <div id="userNameHelp" class="form-text text">
-                <a tabindex="0" class="btn btn-sm btn-transparent" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="SUGESTIONS" data-bs-content="And here's \n some amazing content. \n It's very engaging. Right?">Click me for suggestions:</a>
+                <a tabindex="0" class="btn btn-sm btn-transparent" role="button" data-bs-toggle="popover" data-bs-trigger="hover" title="Suggestions:" data-bs-content="Start typing for Suggestions">Suggestions:</a>
               </div>
             </div>
 
@@ -94,7 +94,7 @@
             return new bootstrap.Popover(popoverTriggerEl)
         })
         var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
-        trigger: 'focus'
+        trigger: 'manual'
         })
     </script>
   </body>

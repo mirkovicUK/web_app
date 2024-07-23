@@ -24,6 +24,5 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.609.0",
     "@aws-sdk/client-s3": "^3.609.0",
     "jsdom": "^24.1.1"
-  },
-  "type": "module"
+  }
 }
