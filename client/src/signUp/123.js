@@ -32,7 +32,7 @@ async function cognitoSignUpHandler (data){
             console.log('from cognitoSignUpHandler() uncought error')
             console.log(error.message)
             throw error
-        }
+        }I wont to see this
     }
 }
 //function ends here

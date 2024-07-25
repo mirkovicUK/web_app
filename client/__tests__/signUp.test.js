@@ -64,31 +64,4 @@ describe('signUp()', () => {
 })
 
 
-describe.skip('cognitoSignUpHandler()', ()=>{
-  it('function calls to succesfulSignUp() after receiving 200', async()=>{
-    // cognitoMock.on(SignUpCommand).resolves({'$metadata':{httpStatusCode:200}})
-    // const invalidPasswordException = new InvalidPasswordException();
-    cognitoMock.on(SignUpCommand)
-    .resolves({'$metadata':{httpStatusCode : 200}})
-
-    const input = {
-      username:'test',
-      password:'test',
-      email:'test'
-    }
-    jest.unstable_mockModule('node:child_process', () => ({
-      successfulSignUp: jest.fn(() => 'mocked')
-  }));
-    // const {successfulSignUp} = await import('node:child_process');
-  
-    
-    
-
-    cognitoSignUpHandler(input)
-    expect(successfulSignUp).toHaveBeenCalled()
-    // expect(cognitoMock).toHaveReceivedCommand(SignUpCommand)
-    // expect(cognitoSignUpHandler(input)).toBe('mocked')
-  })
-})
-
 
