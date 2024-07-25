@@ -1,25 +1,23 @@
+import {expect, jest, test} from '@jest/globals';
 
-import { mockClient } from "aws-sdk-client-mock";
+import 'aws-sdk-client-mock-jest';
+import  {mockClient}  from "aws-sdk-client-mock";
 import { 
   SignUpCommand,
   CognitoIdentityProviderClient,
-  AdminGetUserCommand,
-  UserNotFoundException
 } from "@aws-sdk/client-cognito-identity-provider";
+
 import {
   signUp,
-  cognitoSignUpHandler,
-  getUser,
-  findAwailableUsername,
-} from "../src/signUp.js"
+} from "../src/signUp/signUp.js"
 
 
-// const cognitoMock = mockClient(CognitoIdentityProviderClient)
-// beforeEach(() => {
-//   cognitoMock.reset();
-// });
+const cognitoMock = mockClient(CognitoIdentityProviderClient)
+beforeEach(() => {
+  cognitoMock.reset();
+});
 
-describe.skip('signUp()', () => {
+describe('signUp()', () => {
   it('signUp is mocked', async () => {
     
     const cognitoResponse = {
@@ -65,62 +63,32 @@ describe.skip('signUp()', () => {
   })
 })
 
-describe.skip('getUser()', () => {
-  it('getUser is mocked', async()=>{
-    const cognitoResponse = 
-    { // AdminGetUserResponse
-      Username: "STRING_VALUE", // required
-      UserAttributes: [ 
-        { // AttributeType
-          Name: "STRING_VALUE", // required
-          Value: "STRING_VALUE",
-        },
-      ],
-      UserCreateDate: new Date("TIMESTAMP"),
-      UserLastModifiedDate: new Date("TIMESTAMP"),
-      Enabled: true,
-      UserStatus: "UNCONFIRMED",
-      '$metadata': {
-        httpStatusCode: 200,
-      }
-    };
-    cognitoMock.on(AdminGetUserCommand).resolves(cognitoResponse)
-    const input = {UserPoolId:'test', username:'test',}
 
-    const response = await getUser(input)
-    expect(response).toEqual(cognitoResponse)
-  })
-})
+describe.skip('cognitoSignUpHandler()', ()=>{
+  it('function calls to succesfulSignUp() after receiving 200', async()=>{
+    // cognitoMock.on(SignUpCommand).resolves({'$metadata':{httpStatusCode:200}})
+    // const invalidPasswordException = new InvalidPasswordException();
+    cognitoMock.on(SignUpCommand)
+    .resolves({'$metadata':{httpStatusCode : 200}})
 
-describe('findAwailableUsername()', ()=>{
-  it.skip('function returns false if username is not available (response=200)', async()=>{
-    const cognitoResponse = 
-    { // AdminGetUserResponse
-      Username: "STRING_VALUE", // required
-      UserAttributes: [ 
-        { // AttributeType
-          Name: "STRING_VALUE", // required
-          Value: "STRING_VALUE",
-        },
-      ],
-      UserCreateDate: new Date("TIMESTAMP"),
-      UserLastModifiedDate: new Date("TIMESTAMP"),
-      Enabled: true,
-      UserStatus: "UNCONFIRMED",
-      '$metadata': {
-        httpStatusCode: 200,
-      }
-    };
-    cognitoMock.on(AdminGetUserCommand).resolves(cognitoResponse)
-    const input = {UserPoolId:'test', username:'test'}
-    expect(await findAwailableUsername(input)).toEqual(false)
-  })
-
-  it.skip('live test for true', async ()=>{
     const input = {
-      UserPoolId: 'eu-west-2_Zzl6pXO5x',
-      // username:'uros11'
+      username:'test',
+      password:'test',
+      email:'test'
     }
-    expect(await findAwailableUsername(input)).toEqual(true)
+    jest.unstable_mockModule('node:child_process', () => ({
+      successfulSignUp: jest.fn(() => 'mocked')
+  }));
+    // const {successfulSignUp} = await import('node:child_process');
+  
+    
+    
+
+    cognitoSignUpHandler(input)
+    expect(successfulSignUp).toHaveBeenCalled()
+    // expect(cognitoMock).toHaveReceivedCommand(SignUpCommand)
+    // expect(cognitoSignUpHandler(input)).toBe('mocked')
   })
 })
+
+
