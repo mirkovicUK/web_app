@@ -1,18 +1,25 @@
 {
   "name": "web_app",
+  "jest": {
+    "verbose": true,
+    "transform": {}
+  },
   "version": "1.0.0",
   "description": "web_app_first_try",
   "main": "index.js",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js  ",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ",
+    "test-coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "testWatch": "jest --watch",
-    "build": "webpack"
+    "build": "webpack",
+    "uros":"jest --env=jsdom"
   },
   "keywords": [],
   "author": "Uros Mirkovic",
   "license": "Apache-2.0",
   "devDependencies": {
     "aws-sdk-client-mock": "^4.0.1",
+    "aws-sdk-client-mock-jest": "^4.0.1",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "json-loader": "^0.5.7",
@@ -24,5 +31,6 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.609.0",
     "@aws-sdk/client-s3": "^3.609.0",
     "jsdom": "^24.1.1"
-  }
+  },
+  "type": "module"
 }
