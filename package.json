@@ -8,7 +8,7 @@
   "description": "web_app_first_try",
   "main": "index.js",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ",
+    "test": "node client/src/injectCode.js && node --experimental-vm-modules node_modules/jest/bin/jest.js ",
     "test-coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "testWatch": "jest --watch",
     "build": "webpack",
