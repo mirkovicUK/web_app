@@ -41,7 +41,7 @@ afterEach(() => {
 });
 
 test('all imports are mocked', () => {
-    expect(successfulSignUp()).toBe('successfulSignUp --> mocked');
+    expect(successfulSignUp()).toEqual('successfulSignUp --> mocked');
     expect(usernameExistsExceptionHandler()).toBe('usernameExistsExceptionHandler --> mocked')
     expect(invalidPasswordExceptionHandler()).toBe('invalidPasswordExceptionHandler --> mocked')
     expect(invalidParameterExceptionHandler()).toBe('invalidParameterExceptionHandler --> mocked')
@@ -73,7 +73,7 @@ test('cognitoSignUpHandler calls successfulSignUp on receiving code:200', async(
 test(`cognitoSignUpHandler calls usernameExistsExceptionHandler 
     on receiving UsernameExistsException from Cognito`, async()=>{
     cognitoMock.on(SignUpCommand)
-    .rejects(new UsernameExistsException())
+    .rejects(new UsernameExistsException)
     const input = {
         username:'test',
         password:'test',
@@ -86,7 +86,7 @@ test(`cognitoSignUpHandler calls usernameExistsExceptionHandler
 test(`cognitoSignUpHandler calls invalidPasswordExceptionHandler 
     on receiving InvalidPasswordException from Cognito`, async()=>{
     cognitoMock.on(SignUpCommand)
-    .rejects(new InvalidPasswordException())
+    .rejects(new InvalidPasswordException)
     const input = {
         username:'test',
         password:'test',
@@ -99,7 +99,7 @@ test(`cognitoSignUpHandler calls invalidPasswordExceptionHandler
 test(`cognitoSignUpHandler calls InvalidParameterException 
     on receiving invalidParameterExceptionHandler from Cognito`, async()=>{
     cognitoMock.on(SignUpCommand)
-    .rejects(new InvalidParameterException())
+    .rejects(new InvalidParameterException)
     const input = {
         username:'test',
         password:'test',

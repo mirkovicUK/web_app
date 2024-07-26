@@ -28,7 +28,7 @@ const backupFolderPath = path.join(__dirname, '.injectCodeBackup');
         lines.push(line)
     }
   }
-  file?.close()
+  await file?.close()
   const codeToInject = lines.join('\n')
 
   //read everithing but function from test file into variable
@@ -41,7 +41,7 @@ const backupFolderPath = path.join(__dirname, '.injectCodeBackup');
     }
     linesTest.push(line) 
   }
-  testFile?.close()
+  await testFile?.close()
 
   const codeB4Injection = linesTest.join('\n')
   const newFileContent = codeB4Injection + '\n' + codeToInject
