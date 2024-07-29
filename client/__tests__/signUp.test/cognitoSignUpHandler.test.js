@@ -10,7 +10,7 @@ import {
 
 import {
     signUp,
-} from "../src/signUp/signUp.js"
+} from "../../src/signUp/signUp.js"
 
 const window={}
 window.CONFIG = {

@@ -1,5 +1,3 @@
-import {expect, jest, test} from '@jest/globals';
-
 import 'aws-sdk-client-mock-jest';
 import  {mockClient}  from "aws-sdk-client-mock";
 import { 
@@ -9,7 +7,7 @@ import {
 
 import {
   signUp,
-} from "../src/signUp/signUp.js"
+} from "../../src/signUp/signUp.js"
 
 
 const cognitoMock = mockClient(CognitoIdentityProviderClient)

@@ -12,7 +12,7 @@
     "test-coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "testWatch": "jest --watch",
     "build": "webpack",
-    "uros":"jest --env=jsdom"
+    "uros": "jest --env=jsdom"
   },
   "keywords": [],
   "author": "Uros Mirkovic",
@@ -30,6 +30,7 @@
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.609.0",
     "@aws-sdk/client-s3": "^3.609.0",
+    "jest-fetch-mock": "^3.0.3",
     "jsdom": "^24.1.1"
   },
   "type": "module"

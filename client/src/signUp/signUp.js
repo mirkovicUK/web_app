@@ -11,6 +11,13 @@ function listeners(){
         const formDataObj = Object.fromEntries(new FormData(e.target))
             cognitoSignUpHandler(formDataObj)
         })
+
+        //listens for username imput field to 
+        //check availability b4 submition is clicked
+        document.querySelector('#userName').addEventListener('input', (e)=>{
+            const username = e.target.value
+            usernameHandler(username)
+        })
 }
 // uncoment b4 npm run build command
 // listeners()
@@ -19,19 +26,7 @@ function listeners(){
 ///////////////////////////////////////////////////////////////////////////
 //####### Helpers #########################################################
 ///////////////////////////////////////////////////////////////////////////
-
-function showPassword(){
-    const x = document.getElementById("password");
-    if (x.type === "password") {
-        x.type = "text";
-    } else {
-        x.type = "password";
-    }
-}
-
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-}
+import {showPassword, getRandomInt, usernameHandler} from './helper'
 
 //////////////////////////////////////////////////////////////////////
 //####### Cognito signUp ##############################################

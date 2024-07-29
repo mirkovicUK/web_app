@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const sourcePath = path.join(__dirname, './signUp/cognitoSignUpHandler.js')
-const destinationPath = path.join(__dirname, '../__tests__/cognitoSignUpHandler.test.js')
+const destinationPath = path.join(__dirname, '../__tests__/signUp.test/cognitoSignUpHandler.test.js')
 const backupFolderPath = path.join(__dirname, '.injectCodeBackup');
 
 (async () => {
