@@ -1,7 +1,7 @@
 {
   "resource": "/my/path",
   "path": "/my/path",
-  "httpMethod": "GET",
+  "httpMethod": "POST",
   "headers": {
     "header1": "value1",
     "header2": "value1,value2"
