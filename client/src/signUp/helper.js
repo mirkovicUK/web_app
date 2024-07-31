@@ -32,15 +32,15 @@ async function usernameHandler(username){
         console.log(rawResponse)
         //200 response path username is available
         if(rawResponse.status === 200){
-            console.log('logic for successful response username awailable render it for user')
+            console.log('logic for successful response username available render it for user')
         }
-        //user name not available 401 from server
+        //user name not available 401 from server send list of possibilities 
         else{
             const content = await rawResponse.json()
             console.log('this is 401 path --->', content)
         }
     } catch (error) {
-        console.log('This is from Error usernameHandler \n',error)
+        console.log('This is from usernameHandler Error:\n',error)
         throw error
     }
     

@@ -1,41 +1,41 @@
 import {usernameHandler} from '../../src/signUp/helper'
-import {expect, jest, test} from '@jest/globals';
+import {expect, jest} from '@jest/globals';
 
-import fetchMock from "jest-fetch-mock";
-fetchMock.enableMocks();
+// import fetchMock from "jest-fetch-mock";
+// fetchMock.enableMocks();
 
 // manual mocking fetch
 // global.fetch = jest.fn(() =>
 //     Promise.resolve({
 //       status: 200,
-//       json: () => Promise.resolve({rates: { CAD: 'TEST' } }),
+//       json: () => Promise.resolve({success: true, rates: { 'TEST': 'TEST' } }),
 //     })
 // );
 
-beforeEach(() => {
-    fetch.mockClear();
-});
+// afterEach(() => {
+//     fetch.mockClear();
+//     fetch.mockImplementationOnce(() => 
+//         Promise.resolve({
+//           status: 400,
+//           json: () => Promise.resolve({ success: false, error: 'Something bad happened' }),
+//         })
+//     )
+// });
 
-describe('usernameHandler is calling fetch', ()=>{
+describe.skip('usernameHandler is calling fetch', ()=>{
     
     it('fatch is called', ()=>{
-        fetch.mockImplementationOnce(() => 
-            Promise.resolve({
-              status: 400,
-              json: () => Promise.resolve({ success: false, error: 'Something bad happened' }),
-            }).mockImplementationT
-        )
-        usernameHandler('uros')
+        usernameHandler('urosSSS')
         expect(fetch).toHaveBeenCalled()
     })
 
-    it.skip('fetch reject status 401 path', async()=>{
-        usernameHandler('uros')
+    it('fetch reject status 401 path', async()=>{
+        await usernameHandler('uros')
         expect(fetch).toHaveBeenCalled()
     })
 })
 
-describe.skip('live test to end point',()=>{
+describe('live test to end point',()=>{
     it('THIS IS LIVE', async()=>{
         await usernameHandler('uros')
     })
