@@ -47,7 +47,7 @@ class CognitoIdentityProviderWrapper:
         """
         returns user from Amazon Cognito
         :param user_name: The user name that identifies the user.
-        :return: user metadata when user exists with cognito pool.
+        :return: user metadata when user exists within cognito pool.
                  Otherwise, None.
         """
         try:
