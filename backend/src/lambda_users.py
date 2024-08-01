@@ -9,6 +9,7 @@ import base64
 import hashlib
 import hmac
 import logging
+from random import randint, sample
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 def lambda_handler(event, context):
     """
-    Lambda to check if user exist in cognito
+    Lambda to handle cognito idp
     """
     cognito_idp_client = boto3.client('cognito-idp')
     user_pool_id='eu-west-2_Zzl6pXO5x'
@@ -24,7 +25,40 @@ def lambda_handler(event, context):
     
     if (event['body']) and (event['body'] is not None) and (event['httpMethod'] == 'POST'):
         body = json.loads(event['body'])
-        username = body['username']
+        username = body.get('username')
+        #chek if username is available on body
+        if(username is not None):
+            cognito_wrapper = CognitoIdentityProviderWrapper(
+                cognito_idp_client=cognito_idp_client,
+                user_pool_id=user_pool_id,
+                client_id=client_id,
+            )
+            user = cognito_wrapper.get_user(user_name=username)
+            if(user is not None):
+                #build 50 available username options
+                possible_usernames = [
+                    username + str(randint(0, 99)) if i<25 
+                    else username + str(randint(0, 999)) 
+                    for i in range(50)
+                    ]
+                valid_usernames = [
+                    x for x in possible_usernames
+                    if cognito_wrapper.get_user(x) is None
+                ]
+                ret = headers()
+                ret.update({
+                    'statusCode': 401,
+                    'body': json.dumps(sample(valid_usernames, k=5))
+                })
+                return ret
+            else:
+                #username is valid here .get_user() == None 
+                ret =  headers()
+                ret.update({
+                    "statusCode": 200,
+                    "body":json.dumps(f'{username} is valid')
+                    })
+                return ret
 
             
 
@@ -45,10 +79,9 @@ class CognitoIdentityProviderWrapper:
     
     def get_user(self, user_name):
         """
-        returns user from Amazon Cognito
         :param user_name: The user name that identifies the user.
         :return: user metadata when user exists within cognito pool.
-                 Otherwise, None.
+                Otherwise, None.
         """
         try:
             return self.cognito_idp_client.admin_get_user(
@@ -59,3 +92,13 @@ class CognitoIdentityProviderWrapper:
                 return None
             else:
                 raise err
+            
+def headers():
+    obj = {
+        "headers": {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': 'https://staging.d2utmyzor4zcsw.amplifyapp.com',
+            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'
+        },
+    }
+    return obj

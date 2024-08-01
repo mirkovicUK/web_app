@@ -37,6 +37,6 @@ describe.skip('usernameHandler is calling fetch', ()=>{
 
 describe('live test to end point',()=>{
     it('THIS IS LIVE', async()=>{
-        await usernameHandler('urosddddaaaAA')
+        await usernameHandler('uros')
     })
 })
