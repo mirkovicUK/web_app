@@ -27,28 +27,24 @@ def lambda_handler(event, context):
         body = json.loads(event['body'])
         username = body.get('username')
         #chek if username is available on body
-        if(username is not None):
+        if username is not None:
             cognito_wrapper = CognitoIdentityProviderWrapper(
                 cognito_idp_client=cognito_idp_client,
                 user_pool_id=user_pool_id,
                 client_id=client_id,
             )
             user = cognito_wrapper.get_user(user_name=username)
-            if(user is not None):
-                #build 50 available username options
-                possible_usernames = [
-                    username + str(randint(0, 99)) if i<25 
-                    else username + str(randint(0, 999)) 
-                    for i in range(50)
-                    ]
-                valid_usernames = [
-                    x for x in possible_usernames
-                    if cognito_wrapper.get_user(x) is None
-                ]
+            if user is not None:
+                l = []
+                while(len(l)<5):
+                    possible_username = username + str(randint(0,999))
+                    if cognito_wrapper.get_user(possible_username) is None:
+                        l.append(possible_username)
+
                 ret = headers()
                 ret.update({
                     'statusCode': 401,
-                    'body': json.dumps(sample(valid_usernames, k=5))
+                    'body': json.dumps(l)
                 })
                 return ret
             else:
