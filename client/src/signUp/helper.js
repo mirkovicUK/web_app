@@ -23,7 +23,8 @@ async function usernameHandler(username){
     const requestOptions = {
         method : 'POST',
         headers : header,
-        body : raw
+        body : raw,
+        cors : 'no-cors'
     }
     const url = 'https://3fm4kafox0.execute-api.eu-west-2.amazonaws.com/test/helloworld'
     const request = new Request(url, requestOptions)
@@ -32,6 +33,8 @@ async function usernameHandler(username){
         console.log(rawResponse)
         //200 response path username is available
         if(rawResponse.status === 200){
+            const content = await rawResponse.json()
+            console.log(content)
             console.log('logic for successful response username available render it for user')
         }
         //user name not available 401 from server send list of possibilities 
@@ -44,6 +47,11 @@ async function usernameHandler(username){
         throw error
     }
     
+}
+
+async function passwordHandler(username){
+    console.log('this is passwordHandler() function')
+    console.log('write logic for https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-policies.html')
 }
 
 export {showPassword, getRandomInt, usernameHandler}

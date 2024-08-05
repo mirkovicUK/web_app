@@ -18,9 +18,16 @@ function listeners(){
             const username = e.target.value
             usernameHandler(username)
         })
+
+        //listens for password input field to 
+        //check availability b4 submition is clicked
+        document.querySelector('#password').addEventListener('input', (e)=>{
+            const password = e.target.value
+            passwordHandler(password)
+        })
 }
 // uncoment b4 npm run build command
-// listeners()
+listeners()
 
 
 ///////////////////////////////////////////////////////////////////////////
