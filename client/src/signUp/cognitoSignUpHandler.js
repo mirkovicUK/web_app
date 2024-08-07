@@ -30,6 +30,7 @@ async function cognitoSignUpHandler (data){
             invalidPasswordExceptionHandler(error.message)
         }else if (error instanceof InvalidParameterException){
             console.log('InvalidParameterException', error.message)
+            console.log('FROM InvalidParameterException')
             invalidParameterExceptionHandler(error.message)   
         }else{
             console.log('from cognitoSignUpHandler() uncought error')

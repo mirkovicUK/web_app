@@ -6,6 +6,9 @@ import {
     drawAwailableUsername,
     drawUnawailableUsername,
     drawOneWordUsernameError,
+    updateUsername,
+    updateEmail,
+
  } from "./signUp";
 
 function showPassword(){
@@ -29,6 +32,7 @@ async function usernameHandler(username){
     try {    
         //fetch lambda to check if username is available
         username = username.trim()
+        updateUsername(username)
         if(!isUsernameOneWord(username)){
             throw {name : "UsernameNotAllowed", message : "Only one word username is allowed"}
         }
@@ -61,14 +65,34 @@ async function usernameHandler(username){
             console.log('This is from usernameHandler() Error:\n',error)
         throw error
         }
+    }
+}
+
+async function emailHandler(email) {
+    try {
+        email = email.trim()
+        updateEmail(email)
+        const header = new Headers()
+        header.append("Content-Type", "application/json")
+        const raw = JSON.stringify({email:`${email}`})
+        const requestOptions = {
+            method : 'POST',
+            headers : header,
+            body : raw,
+        }
+        const url = 'https://3fm4kafox0.execute-api.eu-west-2.amazonaws.com/test/helloworld'
+        const request = new Request(url, requestOptions)
+        const rawResponse = await fetch(request)
+        console.log(rawResponse)
+    } catch (error) {
         
     }
-    
 }
 
 
-
-export {showPassword,
+export {
+    showPassword,
     getRandomInt,
     usernameHandler,
+    emailHandler,
 }

@@ -12,6 +12,13 @@ function listeners(){
             cognitoSignUpHandler(formDataObj)
         })
 
+        //listens for email imput field to 
+        //check availability b4 submition is clicked
+        document.querySelector('#exampleInputEmail1').addEventListener('input', (e)=>{
+            const email = e.target.value
+            emailHandler(email)
+        })
+
         //listens for username imput field to 
         //check availability b4 submition is clicked
         document.querySelector('#userName').addEventListener('input', (e)=>{
@@ -26,7 +33,12 @@ listeners()
 ///////////////////////////////////////////////////////////////////////////
 //####### Helpers #########################################################
 ///////////////////////////////////////////////////////////////////////////
-import {showPassword, getRandomInt, usernameHandler,} from './helper'
+import {
+    showPassword,
+    getRandomInt,
+    usernameHandler,
+    emailHandler,
+} from './helper'
 
 //////////////////////////////////////////////////////////////////////
 //####### Cognito signUp ##############################################
@@ -87,7 +99,7 @@ const successfulSignUp = ()=>{
   <button onclick="location.href='index.html';" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>`
 
-    document.getElementById ('mainDiv').innerHTML = snippet
+    document.getElementById('mainDiv').innerHTML = snippet
 }
 
 const invalidParameterExceptionHandler = (errorMsg)=>{
@@ -105,11 +117,9 @@ const invalidParameterExceptionHandler = (errorMsg)=>{
     }
 
     if(userName.length < 1){
-        // const divUsername = document.getElementById('userNameHelp')
         divUsername.classList.add('text-red')
         divUsername.innerHTML = 'Username cannot be empty'
     }else{
-        // const divUsername = document.getElementById('userNameHelp')
         divUsername.classList.add('text-red')
         divUsername.innerHTML = ''
     }
@@ -147,6 +157,15 @@ function drawOneWordUsernameError(msg){
     divUsername.classList.add('text-red')
     divUsername.innerHTML = msg
 }
+// remove leading and trailing white spaces
+function updateUsername(userName){
+    document.getElementById('userName').value = userName
+}
+
+function updateEmail(email){
+    console.log(email)
+    document.getElementById('exampleInputEmail1').value = email
+}
 
 export {
     signUp,
@@ -156,4 +175,6 @@ export {
     drawAwailableUsername,
     drawUnawailableUsername,
     drawOneWordUsernameError,
+    updateUsername,
+    updateEmail
 };
