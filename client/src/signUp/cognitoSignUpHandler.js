@@ -8,7 +8,8 @@ import {
     invalidPasswordExceptionHandler,
     signUp,
     successfulSignUp,
-    invalidParameterExceptionHandler
+    invalidParameterExceptionHandler,
+    drawUnawailableUsername
 } from './signUp'
 
 //function starts here
@@ -23,10 +24,12 @@ async function cognitoSignUpHandler (data){
         }
     } catch (error) {
         if(error instanceof UsernameExistsException){
-           usernameExistsExceptionHandler(data)
+            drawUnawailableUsername(null, data.username)
         }else if (error instanceof InvalidPasswordException){
+            console.log('InvalidPasswordException')
             invalidPasswordExceptionHandler(error.message)
         }else if (error instanceof InvalidParameterException){
+            console.log('InvalidParameterException', error.message)
             invalidParameterExceptionHandler(error.message)   
         }else{
             console.log('from cognitoSignUpHandler() uncought error')

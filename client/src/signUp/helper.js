@@ -2,6 +2,12 @@
 //####### Helpers #########################################################
 ///////////////////////////////////////////////////////////////////////////
 
+import {
+    drawAwailableUsername,
+    drawUnawailableUsername,
+    drawOneWordUsernameError,
+ } from "./signUp";
+
 function showPassword(){
     const x = document.getElementById("password");
     if (x.type === "password") {
@@ -15,43 +21,54 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
+function isUsernameOneWord(username){
+    return !(username.split(' ').length > 1)
+}
+
 async function usernameHandler(username){
-    //fetch lambda to check if username is available
-    const header = new Headers()
-    header.append("Content-Type", "application/json")
-    const raw = JSON.stringify({username:`${username}`})
-    const requestOptions = {
-        method : 'POST',
-        headers : header,
-        body : raw,
-        cors : 'no-cors'
-    }
-    const url = 'https://3fm4kafox0.execute-api.eu-west-2.amazonaws.com/test/helloworld'
-    const request = new Request(url, requestOptions)
-    try {
+    try {    
+        //fetch lambda to check if username is available
+        username = username.trim()
+        if(!isUsernameOneWord(username)){
+            throw {name : "UsernameNotAllowed", message : "Only one word username is allowed"}
+        }
+        const header = new Headers()
+        header.append("Content-Type", "application/json")
+        const raw = JSON.stringify({username:`${username}`})
+        const requestOptions = {
+            method : 'POST',
+            headers : header,
+            body : raw,
+        }
+        const url = 'https://3fm4kafox0.execute-api.eu-west-2.amazonaws.com/test/helloworld'
+        const request = new Request(url, requestOptions)
+    
         const rawResponse = await fetch(request)
         console.log(rawResponse)
         //200 response path username is available
         if(rawResponse.status === 200){
-            const content = await rawResponse.json()
-            console.log(content)
-            console.log('logic for successful response username available render it for user')
+            drawAwailableUsername(username)
         }
         //user name not available 401 from server send list of possibilities 
         else{
             const content = await rawResponse.json()
-            console.log('this is 401 path --->', content)
+            drawUnawailableUsername(content, username)
         }
-    } catch (error) {
-        console.log('This is from usernameHandler Error:\n',error)
+    }catch (error) {
+        if (error.name === "UsernameNotAllowed"){
+            drawOneWordUsernameError(error.message)
+        }else{
+            console.log('This is from usernameHandler() Error:\n',error)
         throw error
+        }
+        
     }
     
 }
 
-async function passwordHandler(username){
-    console.log('this is passwordHandler() function')
-    console.log('write logic for https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-policies.html')
-}
 
-export {showPassword, getRandomInt, usernameHandler}
+
+export {showPassword,
+    getRandomInt,
+    usernameHandler,
+}

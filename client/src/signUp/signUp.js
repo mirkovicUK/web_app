@@ -18,13 +18,6 @@ function listeners(){
             const username = e.target.value
             usernameHandler(username)
         })
-
-        //listens for password input field to 
-        //check availability b4 submition is clicked
-        document.querySelector('#password').addEventListener('input', (e)=>{
-            const password = e.target.value
-            passwordHandler(password)
-        })
 }
 // uncoment b4 npm run build command
 listeners()
@@ -33,7 +26,7 @@ listeners()
 ///////////////////////////////////////////////////////////////////////////
 //####### Helpers #########################################################
 ///////////////////////////////////////////////////////////////////////////
-import {showPassword, getRandomInt, usernameHandler} from './helper'
+import {showPassword, getRandomInt, usernameHandler,} from './helper'
 
 //////////////////////////////////////////////////////////////////////
 //####### Cognito signUp ##############################################
@@ -83,21 +76,6 @@ function invalidPasswordExceptionHandler(errorMsg){
     })
 }
 
-function usernameExistsExceptionHandler(data){
-    let usernameSuggestions = data.username + getRandomInt(999).toString()
-    console.log('THIS RECOMENDATION ARE NOT VALID USERNAMES ')
-
-    const snippet = `<button type="button" class="btn btn-sm btn-transparent" 
-        data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" title="Available:" 
-        data-bs-content="${usernameSuggestions}"><span class="text-red">
-        Someone alredy has that username. Try another?</span></button>`
-    document.getElementById('userNameHelp').innerHTML = snippet
-    //reinitialize popover
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl)
-    })   
-}
 
 //to be called when user is added to cognito 
 const successfulSignUp = ()=>{
@@ -115,6 +93,11 @@ const successfulSignUp = ()=>{
 const invalidParameterExceptionHandler = (errorMsg)=>{
     const password = document.getElementById('password').value
     const userName = document.getElementById('userName').value
+    
+    const divUsername = document.getElementById('userNameHelp')
+        divUsername.classList = divUsername.classList.forEach(
+            (el)=> el !== 'text-green'
+        )
     if(password.length < 2){
         const divPassword = document.getElementById('passwordHelp')
         divPassword.classList.add('text-red')
@@ -122,20 +105,55 @@ const invalidParameterExceptionHandler = (errorMsg)=>{
     }
 
     if(userName.length < 1){
-        const divUsername = document.getElementById('userNameHelp')
+        // const divUsername = document.getElementById('userNameHelp')
         divUsername.classList.add('text-red')
         divUsername.innerHTML = 'Username cannot be empty'
     }else{
-        const divUsername = document.getElementById('userNameHelp')
+        // const divUsername = document.getElementById('userNameHelp')
         divUsername.classList.add('text-red')
         divUsername.innerHTML = ''
     }
 }
 
+function drawAwailableUsername(userName){
+    const divUsername = document.getElementById('userNameHelp')
+    divUsername.classList.add('text-green')
+    divUsername.innerHTML = `${userName} is Available Username`
+}
+
+function drawUnawailableUsername(awailableUsernameList, userName){
+    let awailableUsername = ''
+    if(awailableUsernameList){
+        const randInt = getRandomInt(awailableUsernameList.length)
+        awailableUsername = awailableUsernameList[randInt]
+    }else{
+        awailableUsername = 'typing new one'
+    }
+    
+    const divUsername = document.getElementById('userNameHelp')
+    divUsername.classList = divUsername.classList.forEach(
+        (el)=> el !== 'text-green'
+    )
+    divUsername.classList.add('text-red')
+    divUsername.innerHTML = `Unfortunately ${userName} is not available.
+    Try ${awailableUsername} insted?`
+}
+
+function drawOneWordUsernameError(msg){
+    const divUsername = document.getElementById('userNameHelp')
+    divUsername.classList = divUsername.classList.forEach(
+        (el)=> el !== 'text-green'
+    )
+    divUsername.classList.add('text-red')
+    divUsername.innerHTML = msg
+}
+
 export {
     signUp,
     invalidPasswordExceptionHandler,
-    usernameExistsExceptionHandler,
     successfulSignUp,
-    invalidParameterExceptionHandler
+    invalidParameterExceptionHandler,
+    drawAwailableUsername,
+    drawUnawailableUsername,
+    drawOneWordUsernameError,
 };
