@@ -7,8 +7,7 @@ import {
 
 import {
   signUp,
-} from "../../src/signUp/signUp.js"
-
+} from "../../src/signUp/signUpA.js"
 
 const cognitoMock = mockClient(CognitoIdentityProviderClient)
 beforeEach(() => {

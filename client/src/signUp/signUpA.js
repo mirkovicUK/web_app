@@ -25,6 +25,7 @@ function listeners(){
             const username = e.target.value
             usernameHandler(username)
         })
+
 }
 // uncoment b4 npm run build command
 listeners()
@@ -110,16 +111,26 @@ const invalidParameterExceptionHandler = (errorMsg)=>{
         divUsername.classList = divUsername.classList.forEach(
             (el)=> el !== 'text-green'
         )
+    const divPassword = document.getElementById('passwordHelp')
     if(password.length < 2){
-        const divPassword = document.getElementById('passwordHelp')
         divPassword.classList.add('text-red')
         divPassword.innerHTML = 'Password must be Min 8 character(s)'
+    }
+
+    if(password[0] === ' '){
+        divPassword.classList.add('text-red')
+        divPassword.innerHTML = 'Password can not start with whitespace'
+    }
+    if(password.slice(-1) === ' '){
+        divPassword.classList.add('text-red')
+        divPassword.innerHTML = 'Please remove whitespace from the end of password'
     }
 
     if(userName.length < 1){
         divUsername.classList.add('text-red')
         divUsername.innerHTML = 'Username cannot be empty'
-    }else{
+    }
+    else{
         divUsername.classList.add('text-red')
         divUsername.innerHTML = ''
     }
@@ -146,7 +157,12 @@ function drawUnawailableUsername(awailableUsernameList, userName){
     )
     divUsername.classList.add('text-red')
     divUsername.innerHTML = `Unfortunately ${userName} is not available.
-    Try ${awailableUsername} insted?`
+    Try <button type="button" id="button" class="link text-green ">${awailableUsername}</button> insted?`
+    const button = document.getElementById('button')
+    button.classList.add('button_noborder')
+    document.querySelector('#button').addEventListener('click',(e)=>{
+        document.getElementById('userName').value = awailableUsername
+    })
 }
 
 function drawOneWordUsernameError(msg){
@@ -167,6 +183,8 @@ function updateEmail(email){
     document.getElementById('exampleInputEmail1').value = email
 }
 
+function usernameExistsExceptionHandler(){
+}
 export {
     signUp,
     invalidPasswordExceptionHandler,
@@ -176,5 +194,6 @@ export {
     drawUnawailableUsername,
     drawOneWordUsernameError,
     updateUsername,
-    updateEmail
+    updateEmail,
+    usernameExistsExceptionHandler,
 };

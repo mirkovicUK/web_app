@@ -10,7 +10,7 @@ import {
     successfulSignUp,
     invalidParameterExceptionHandler,
     drawUnawailableUsername
-} from './signUp'
+} from './signUpA'
 
 //function starts here
 async function cognitoSignUpHandler (data){

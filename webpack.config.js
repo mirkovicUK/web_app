@@ -3,7 +3,7 @@ var path = require("path");
 // import * as path from 'path'
 module.exports = {
   // Specify the entry point for our app.
-  entry: [path.join(__dirname, "client/src/signUp/signUp.js")],
+  entry: [path.join(__dirname, "client/src/signUp/signUpA.js")],
   // Specify the output file containing our bundled code.
   output: {
     path: path.resolve(__dirname, 'client/dist'),

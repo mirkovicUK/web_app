@@ -1,6 +1,6 @@
 /*
 This file contains tests for cognitoSignUpHandler()
-Any time function is changed it has be imported here manualy
+Any time npm run test function is imported here b4 tests
 */
 import {
     UsernameExistsException,
@@ -9,8 +9,8 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider"
 
 import {
-    signUp,
-} from "../../src/signUp/signUp.js"
+    signUp
+} from "../../src/signUp/signUpA"
 
 const window={}
 window.CONFIG = {
@@ -18,18 +18,17 @@ window.CONFIG = {
     region: 'test',
     UserPoolId: 'test'
 }
-
 import {expect, jest, test} from '@jest/globals';
 
 jest.unstable_mockModule('node:child_process', () => ({
     successfulSignUp: jest.fn(()=>'successfulSignUp --> mocked'),
-    usernameExistsExceptionHandler:jest.fn(()=>'usernameExistsExceptionHandler --> mocked'),
+    drawUnawailableUsername:jest.fn(()=>'drawUnawailableUsername --> mocked'),
     invalidPasswordExceptionHandler:jest.fn(()=>'invalidPasswordExceptionHandler --> mocked'),
     invalidParameterExceptionHandler: jest.fn(()=>'invalidParameterExceptionHandler --> mocked')
 }));
 const {
     successfulSignUp,
-    usernameExistsExceptionHandler,
+    drawUnawailableUsername,
     invalidPasswordExceptionHandler,
     invalidParameterExceptionHandler
 } = await import('node:child_process');
@@ -42,11 +41,10 @@ afterEach(() => {
 
 test('all imports are mocked', () => {
     expect(successfulSignUp()).toEqual('successfulSignUp --> mocked');
-    expect(usernameExistsExceptionHandler()).toBe('usernameExistsExceptionHandler --> mocked')
+    expect(drawUnawailableUsername()).toBe('drawUnawailableUsername --> mocked')
     expect(invalidPasswordExceptionHandler()).toBe('invalidPasswordExceptionHandler --> mocked')
     expect(invalidParameterExceptionHandler()).toBe('invalidParameterExceptionHandler --> mocked')
 });
-
 import { 
     SignUpCommand,
     CognitoIdentityProviderClient,
@@ -70,7 +68,7 @@ test('cognitoSignUpHandler calls successfulSignUp on receiving code:200', async(
     expect(successfulSignUp).toHaveBeenCalled()
 })
 
-test(`cognitoSignUpHandler calls usernameExistsExceptionHandler 
+test(`cognitoSignUpHandler calls drawUnawailableUsername 
     on receiving UsernameExistsException from Cognito`, async()=>{
     cognitoMock.on(SignUpCommand)
     .rejects(new UsernameExistsException)
@@ -80,7 +78,7 @@ test(`cognitoSignUpHandler calls usernameExistsExceptionHandler
         email:'test'
     }
     await cognitoSignUpHandler(input)
-    expect(usernameExistsExceptionHandler).toHaveBeenCalled()
+    expect(drawUnawailableUsername).toHaveBeenCalled()
 })
 
 test(`cognitoSignUpHandler calls invalidPasswordExceptionHandler 
@@ -122,10 +120,13 @@ async function cognitoSignUpHandler (data){
         }
     } catch (error) {
         if(error instanceof UsernameExistsException){
-           usernameExistsExceptionHandler(data)
+            drawUnawailableUsername(null, data.username)
         }else if (error instanceof InvalidPasswordException){
+            console.log('InvalidPasswordException')
             invalidPasswordExceptionHandler(error.message)
         }else if (error instanceof InvalidParameterException){
+            console.log('InvalidParameterException', error.message)
+            console.log('FROM InvalidParameterException')
             invalidParameterExceptionHandler(error.message)   
         }else{
             console.log('from cognitoSignUpHandler() uncought error')

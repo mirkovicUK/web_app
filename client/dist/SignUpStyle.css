@@ -11,3 +11,8 @@
     color: green;
     font-size: x-small;
 }
+
+.button_noborder{
+    border:none;
+    background:none;
+}

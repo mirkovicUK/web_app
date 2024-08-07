@@ -1,26 +1,26 @@
 import {usernameHandler} from '../../src/signUp/helper'
 import {expect, jest} from '@jest/globals';
 
-// import fetchMock from "jest-fetch-mock";
-// fetchMock.enableMocks();
+import fetchMock from "jest-fetch-mock";
+fetchMock.enableMocks();
 
 // manual mocking fetch
-// global.fetch = jest.fn(() =>
-//     Promise.resolve({
-//       status: 200,
-//       json: () => Promise.resolve({success: true, rates: { 'TEST': 'TEST' } }),
-//     })
-// );
+global.fetch = jest.fn(() =>
+    Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve({success: true, rates: { 'TEST': 'TEST' } }),
+    })
+);
 
-// afterEach(() => {
-//     fetch.mockClear();
-//     fetch.mockImplementationOnce(() => 
-//         Promise.resolve({
-//           status: 400,
-//           json: () => Promise.resolve({ success: false, error: 'Something bad happened' }),
-//         })
-//     )
-// });
+afterEach(() => {
+    fetch.mockClear();
+    fetch.mockImplementationOnce(() => 
+        Promise.resolve({
+          status: 400,
+          json: () => Promise.resolve({ success: false, error: 'Something bad happened' }),
+        })
+    )
+});
 
 describe.skip('usernameHandler is calling fetch', ()=>{
     
@@ -35,7 +35,7 @@ describe.skip('usernameHandler is calling fetch', ()=>{
     })
 })
 
-describe('live test to end point',()=>{
+describe.skip('live test to end point',()=>{
     it('THIS IS LIVE', async()=>{
         await usernameHandler('uros')
     })
