@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 
 def lambda_handler(event, context):
     """
-    Lambda to handle cognito idp
+    Lambda to handle cognito_idp. Function check if username & email 
+    is available(unick) in cognito idp returns 200 if so
+    else 401 when atribute exist in cognito_idp
     """
     cognito_idp_client = boto3.client('cognito-idp')
     user_pool_id='eu-west-2_Zzl6pXO5x'
@@ -53,12 +55,25 @@ def lambda_handler(event, context):
                     "body":json.dumps(f'{username} is valid')
                     })
                 return ret 
+            
         #chek if email is available on body
         elif email:
             users = cognito_wrapper.list_users({'email':email})
             if users:
-                pass
-            #email doesnot exist in cognito return 200
+                if len(users) > 1:
+                    logger.error('list_users() method \
+                    it should be only one users per email in cognito_idp')
+                else:
+                    ret = headers()
+                    ret.update({
+                        "statusCode":401,
+                        "body":json.dumps({
+                            'email':email,
+                            "UserStatus":users[0]['UserStatus']
+                        })
+                    })
+                    return ret              
+            #[email=None] doesnot exist in cognito return 200
             else:
                 ret =  headers()
                 ret.update({

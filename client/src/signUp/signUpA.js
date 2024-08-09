@@ -13,15 +13,15 @@ function listeners(){
         })
 
         //listens for email imput field to 
-        //check availability b4 submition is clicked
-        document.querySelector('#exampleInputEmail1').addEventListener('input', (e)=>{
+        // check availability b4 submition is clicked
+        document.querySelector('#exampleInputEmail1').addEventListener('blur', (e)=>{
             const email = e.target.value
             emailHandler(email)
         })
 
         //listens for username imput field to 
         //check availability b4 submition is clicked
-        document.querySelector('#userName').addEventListener('input', (e)=>{
+        document.querySelector('#userName').addEventListener('blur', (e)=>{
             const username = e.target.value
             usernameHandler(username)
         })
@@ -129,6 +129,8 @@ const invalidParameterExceptionHandler = (errorMsg)=>{
     if(userName.length < 1){
         divUsername.classList.add('text-red')
         divUsername.innerHTML = 'Username cannot be empty'
+    }else if(userName.split(' ').length > 1){
+        drawUsernameError("One word username only.")
     }
     else{
         divUsername.classList.add('text-red')
@@ -142,6 +144,12 @@ function drawAwailableUsername(userName){
     divUsername.innerHTML = `${userName} is Available Username`
 }
 
+function drawAwailableEmail(email){
+    const divEmail = document.getElementById('emailHelp')
+    divEmail.classList.add('text-green')
+    divEmail.innerHTML = `${email}: We'll never share your email with anyone else.`
+}
+
 function drawUnawailableUsername(awailableUsernameList, userName){
     let awailableUsername = ''
     if(awailableUsernameList){
@@ -150,7 +158,6 @@ function drawUnawailableUsername(awailableUsernameList, userName){
     }else{
         awailableUsername = 'typing new one'
     }
-    
     const divUsername = document.getElementById('userNameHelp')
     divUsername.classList = divUsername.classList.forEach(
         (el)=> el !== 'text-green'
@@ -165,13 +172,35 @@ function drawUnawailableUsername(awailableUsernameList, userName){
     })
 }
 
-function drawOneWordUsernameError(msg){
+function drawUnawailableEmail(content, email){
+    const divEmail = document.getElementById('emailHelp')
+    divEmail.classList = divEmail.classList.forEach(
+        (el)=> el !== 'text-green'
+    )
+    divEmail.classList.add('text-red')
+    divEmail.innerHTML = `This email address is already in use. 
+    <button onclick="window.location.href='LogIn.html'" type="button" id="button1" class="link text-green ">
+    Log In insted? </button>`
+    const button = document.getElementById('button1')
+    button.classList.add('button_noborder')
+}
+
+function drawUsernameError(msg){
     const divUsername = document.getElementById('userNameHelp')
     divUsername.classList = divUsername.classList.forEach(
         (el)=> el !== 'text-green'
     )
     divUsername.classList.add('text-red')
     divUsername.innerHTML = msg
+}
+
+function drawEmailError(msg){
+    const divEmail = document.getElementById('emailHelp')
+    divEmail.classList = divEmail.classList.forEach(
+        (el)=> el !== 'text-green'
+    )
+    divEmail.classList.add('text-red')
+    divEmail.innerHTML = msg
 }
 // remove leading and trailing white spaces
 function updateUsername(userName){
@@ -190,8 +219,11 @@ export {
     successfulSignUp,
     invalidParameterExceptionHandler,
     drawAwailableUsername,
+    drawAwailableEmail,
     drawUnawailableUsername,
-    drawOneWordUsernameError,
+    drawUnawailableEmail,
+    drawUsernameError,
+    drawEmailError,
     updateUsername,
     updateEmail,
     usernameExistsExceptionHandler,
