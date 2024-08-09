@@ -179,7 +179,6 @@ function updateUsername(userName){
 }
 
 function updateEmail(email){
-    console.log(email)
     document.getElementById('exampleInputEmail1').value = email
 }
 

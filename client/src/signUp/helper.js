@@ -82,8 +82,8 @@ async function emailHandler(email) {
         }
         const url = 'https://3fm4kafox0.execute-api.eu-west-2.amazonaws.com/test/helloworld'
         const request = new Request(url, requestOptions)
-        // const rawResponse = await fetch(request)
-        // console.log(rawResponse)
+        const rawResponse = await fetch(request)
+        console.log(rawResponse)
     } catch (error) {
         console.log('This is from emailHandler() Error:\n',error)
         throw error

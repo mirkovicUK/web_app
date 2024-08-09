@@ -4,7 +4,6 @@ import botocore
 import time
 from datetime import datetime as dt
 from botocore.exceptions import ClientError
-
 import base64
 import hashlib
 import hmac
@@ -12,8 +11,6 @@ import logging
 from random import randint, sample
 
 logger = logging.getLogger(__name__)
-
-
 
 def lambda_handler(event, context):
     """
@@ -26,13 +23,14 @@ def lambda_handler(event, context):
     if (event['body']) and (event['body'] is not None) and (event['httpMethod'] == 'POST'):
         body = json.loads(event['body'])
         username = body.get('username')
-        #chek if username is available on body
-        if username is not None:
-            cognito_wrapper = CognitoIdentityProviderWrapper(
+        email = body.get('email')
+        cognito_wrapper = CognitoIdentityProviderWrapper(
                 cognito_idp_client=cognito_idp_client,
                 user_pool_id=user_pool_id,
                 client_id=client_id,
             )
+        #chek if username is available on body
+        if username :
             user = cognito_wrapper.get_user(user_name=username)
             if user is not None:
                 l = []
@@ -54,9 +52,22 @@ def lambda_handler(event, context):
                     "statusCode": 200,
                     "body":json.dumps(f'{username} is valid')
                     })
+                return ret 
+        #chek if email is available on body
+        elif email:
+            users = cognito_wrapper.list_users({'email':email})
+            if users:
+                pass
+            #email doesnot exist in cognito return 200
+            else:
+                ret =  headers()
+                ret.update({
+                    "statusCode": 200,
+                    "body":json.dumps(f'{email} is valid')
+                })
                 return ret
-
-            
+                
+    
 
 
 class CognitoIdentityProviderWrapper:
@@ -89,11 +100,37 @@ class CognitoIdentityProviderWrapper:
             else:
                 raise err
             
+    def list_users(self, d:dict=None):
+        """
+        Returns a list of the users in the current user pool or None
+        :param d: Filtering condition Dict AttributeName : AttributeValue
+                  Filter-Type [exact match], NO multiple attributes are allowed
+        :return: The list of users when user exists within cognito pool.
+                Otherwise, None.
+        """
+        try:
+            try:
+                k = list(d.keys())[0]
+                filter=f"{k} = \"{d[k]}\"" 
+            except:
+                filter = ''
+            response = self.cognito_idp_client.list_users(
+                UserPoolId=self.user_pool_id,
+                Filter=filter
+                )
+            users:list = response["Users"]
+        except ClientError as err:
+                if err.response["Error"]["Code"] == 'ResourceNotFoundException':
+                    return None
+                else:
+                    raise                 
+        return users
+            
 def headers():
     obj = {
         "headers": {
             'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Origin': 'https://staging.d2utmyzor4zcsw.amplifyapp.com',
+            'Access-Control-Allow-Origin': 'http://127.0.0.1:5501',
             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'
         },
     }

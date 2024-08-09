@@ -85,3 +85,49 @@ def test_lambda_returns_401_and_list_of_available_usernames(get_user_patched):
     assert respond['statusCode'] == 401
     assert len(json.loads(respond['body'])) == 5
 
+@pytest.mark.describe('CognitoIdentityProviderWrapper.list_users()')
+def test_lists_user_return_users_when_exist():
+    cognito_idp_client = boto3.client('cognito-idp')
+    user_pool_id = "test-user-pool-id"
+    client_id = "test-client-id"
+    response = {
+        'Users' :[{'Username':'user1'},{'Username':'user2'}]
+    }
+    with Stubber(cognito_idp_client) as stubbler:
+        stubbler.add_response('list_users', response)
+        wrapper = CognitoIdentityProviderWrapper(
+            cognito_idp_client,
+            user_pool_id,
+            client_id
+        )
+        users = wrapper.list_users()
+        assert users is response['Users']
+        assert users == response['Users']
+
+@pytest.mark.describe('CognitoIdentityProviderWrapper.list_users()')
+def test_list_users_return_None_when_ResourceNotFoundException():
+    cognito_idp_client = boto3.client('cognito-idp')
+    user_pool_id = "test-user-pool-id"
+    client_id = "test-client-id"
+    with Stubber(cognito_idp_client) as stubbler:
+        stubbler.add_client_error('list_users', 'ResourceNotFoundException')
+        wrapper = CognitoIdentityProviderWrapper(
+            cognito_idp_client,
+            user_pool_id,
+            client_id
+        )
+        users = wrapper.list_users({'email': 'YO email'})
+        assert users is None
+
+@pytest.mark.describe('lambda_handler()')
+def test_lambda_returns_200_when_email_available():
+    # set up event from API GAteway to lambda
+    with open('backend/api_gateway_event.txt', 'r') as f:
+        event = json.loads(f.read())
+    body = json.dumps({"email":"TEST@TEST.com"})
+    http_method = 'POST'
+    event['body'], event['httpMethod'] = body, http_method
+    with patch.object(CognitoIdentityProviderWrapper, 'list_users', return_value=None):
+        respond = lambda_handler(event, None)
+    assert respond['statusCode'] == 200
+    assert 'TEST' in json.loads(respond['body'])
